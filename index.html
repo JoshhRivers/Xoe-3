@@ -1,46 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buenas noches, amor 💖</title>
   <style>
-    :root {
-      --rosa: #ff4081;
-      --rosa2: #e91e63;
-      --dorado: #ffefba;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
     body {
       margin: 0;
       padding: 0;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      background: linear-gradient(-45deg, #0d001a, #1a0033, #330033, #0d001a);
+      background-size: 400% 400%;
+      animation: gradiente 20s ease infinite;
+      color: white;
       font-family: 'Courier New', monospace;
       overflow: hidden;
       text-align: center;
       position: relative;
     }
 
-    /* Fondo con gradiente animado */
-    body {
-      background: linear-gradient(-45deg, #0d001a, #1a0033, #330033, #0d001a);
-      background-size: 400% 400%;
-      animation: gradiente 20s ease infinite;
-      position: relative;
-      z-index: 0;
-    }
     @keyframes gradiente {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    /* Fondo estrellado */
+    /* Estrellas */
     body::before {
       content: "";
       position: absolute;
@@ -53,50 +41,75 @@
 
     @keyframes starsMove {
       from { background-position: 0 0; }
-      to   { background-position: 0 -200px; }
+      to { background-position: 0 -200px; }
     }
 
     @keyframes starsTwinkle {
       0%, 100% { opacity: 0.25; }
-      50%      { opacity: 0.5; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Luna */
+    .luna {
+      position: absolute;
+      top: 50px;
+      right: 60px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #fff 60%, #ddd 80%, transparent 100%);
+      border-radius: 50%;
+      box-shadow: 0 0 40px 15px rgba(255, 255, 200, 0.6);
     }
 
     /* Pantalla inicial */
     #inicio {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.9);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       z-index: 10;
     }
-    #inicio h2 { margin: 0 0 16px; }
-    #btnIniciar {
-      background: var(--rosa);
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-size: 1.1em;
-      border-radius: 24px;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--rosa);
-      transition: transform .25s, background .25s;
-    }
-    #btnIniciar:hover { background: var(--rosa2); transform: scale(1.05); }
 
+    #inicio h2 {
+      font-size: 1.5em;
+      color: #fff;
+      text-shadow: 0 0 15px #ff80bf, 0 0 30px #ff4da6;
+    }
+
+    #inicio button {
+      background: linear-gradient(45deg, #ff4da6, #ff80bf);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff4da6;
+      transition: 0.3s;
+    }
+
+    #inicio button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px #ff80bf;
+    }
+
+    /* Texto principal */
     h1 {
-      font-size: 1.6em;
-      text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
-      margin: 10px 0 0;
+      font-size: 1.8em;
+      background: linear-gradient(90deg, #fff, #ffb6c1, #ffe6f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+      margin: 15px 0;
     }
 
     .espera {
       font-weight: bold;
       color: #ffff99;
-      font-size: 1.05em;
+      font-size: 1.1em;
       margin: 10px 0;
     }
 
@@ -109,36 +122,42 @@
       border-right: 2px solid #fff;
       display: inline-block;
       overflow: hidden;
-      animation: blink .8s step-end infinite;
+      animation: blink 0.8s infinite;
     }
-    @keyframes blink { 50% { border-color: transparent; } }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
 
     /* Corazón */
     .corazon {
-      width: 70px; height: 60px;
-      background: red;
+      width: 80px;
+      height: 70px;
+      background: linear-gradient(45deg, #ff4da6, #ff1a75);
       position: relative;
       margin: 20px auto;
       transform: rotate(-45deg);
-      animation: latido 1.5s ease-in-out infinite;
+      animation: latido 1s infinite;
       display: none;
       cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 77, 166, 0.7);
     }
+
     .corazon::before, .corazon::after {
       content: "";
-      width: 70px; height: 70px;
-      background: red;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #ff4da6, #ff1a75);
       border-radius: 50%;
       position: absolute;
     }
-    .corazon::before { top: -35px; left: 0; }
-    .corazon::after  { top: 0; left: 35px; }
+
+    .corazon::before { top: -40px; left: 0; }
+    .corazon::after { left: 40px; top: 0; }
 
     @keyframes latido {
-      0%,100% { transform: rotate(-45deg) scale(1); }
-      25%     { transform: rotate(-45deg) scale(1.15); }
-      50%     { transform: rotate(-45deg) scale(1.3); }
-      75%     { transform: rotate(-45deg) scale(1.15); }
+      0%, 100% { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale(1.2); }
     }
 
     /* Mensaje final */
@@ -146,44 +165,54 @@
       display: none;
       font-size: 1.2em;
       margin-top: 15px;
-      color: var(--dorado);
-      text-shadow: 0 0 10px #f0f;
-      animation: aparecer 1.2s ease-out forwards;
-    }
-    @keyframes aparecer {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+      color: #ffefba;
+      text-shadow: 0 0 10px #ff80bf;
+      animation: aparecer 2s ease-in-out forwards;
     }
 
-    /* Responsivo */
-    @media (max-width: 600px) {
-      h1 { font-size: 1.35em; }
-      .texto { font-size: .95em; }
-      #btnIniciar { font-size: 1em; padding: 10px 20px; }
-      .corazon { width: 56px; height: 50px; }
-      .corazon::before, .corazon::after { width: 56px; height: 56px; }
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Corazones flotantes */
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      color: #ff80bf;
+      opacity: 0.8;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      30% { opacity: 1; }
+      to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
   </style>
 </head>
 <body>
+  <!-- Luna -->
+  <div class="luna"></div>
+
   <!-- Pantalla inicial -->
   <div id="inicio">
     <h2>✨ Tengo algo para ti ✨</h2>
-    <button id="btnIniciar" type="button">Haz clic para ver</button>
+    <button id="btnIniciar">Haz clic para ver</button>
   </div>
 
-  <!-- Contenido -->
+  <!-- Contenido sorpresa -->
   <div id="contenido" style="display:none;">
     <h1>QUE LE DAS CELOS AL CIELO</h1>
-    <p class="espera" id="estado">espera...</p>
+    <p class="espera">espera...</p>
     <p id="poema" class="texto"></p>
-    <div class="corazon" id="corazon" title="Tócame 💗"></div>
+
+    <div class="corazon" id="corazon"></div>
     <p id="final">✨ Buenas noches, mi amor. Que sueñes tan bonito como tú 💖 🌙</p>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const texto = `En la noche, tu luz es la más brillante,
+    const texto = `En la noche, tu luz es la más brillante,
 Más que mil estrellas en el cielo distante.
 Tu sonrisa eclipsa la luna y su reflejo,
 Y tu belleza hace al universo pequeño.
@@ -193,41 +222,56 @@ se esconde un arte, un mundo lógico.
 Tus ojos, como variables en constante cambio,
 resuelven mi algoritmo cuando te hallo.`;
 
-      let i = 0;
-      const btn       = document.getElementById("btnIniciar");
-      const inicio    = document.getElementById("inicio");
-      const contenido = document.getElementById("contenido");
-      const poema     = document.getElementById("poema");
-      const estado    = document.getElementById("estado");
-      const corazon   = document.getElementById("corazon");
+    let i = 0;
+    const btn = document.getElementById("btnIniciar");
+    const inicio = document.getElementById("inicio");
+    const contenido = document.getElementById("contenido");
+    const poema = document.getElementById("poema");
 
-      btn.addEventListener("click", () => {
-        inicio.style.display = "none";
-        contenido.style.display = "block";
-        estado.textContent = " ";
-        escribir();
-      });
-
-      function escribir() {
-        if (i < texto.length) {
-          poema.textContent += texto.charAt(i);
-          i++;
-          setTimeout(escribir, 50);
-        } else {
-          corazon.style.display = "block";
-          setTimeout(() => {
-            document.getElementById("final").style.display = "block";
-          }, 900);
-        }
-      }
-
-      corazon.addEventListener("click", () => {
-        corazon.style.transform = "rotate(-45deg) scale(1.6)";
-        setTimeout(() => {
-          corazon.style.transform = ""; // vuelve a animación CSS
-        }, 250);
-      });
+    btn.addEventListener("click", () => {
+      inicio.remove();
+      contenido.style.display = "block";
+      escribir();
+      generarCorazones();
     });
+
+    function escribir() {
+      if (i < texto.length) {
+        poema.textContent += texto.charAt(i);
+        i++;
+        setTimeout(escribir, 50);
+      } else {
+        document.getElementById("corazon").style.display = "block";
+        setTimeout(() => {
+          document.getElementById("final").style.display = "block";
+        }, 1000);
+      }
+    }
+
+    // Corazón interactivo
+    document.getElementById("corazon").addEventListener("click", () => {
+      let c = document.getElementById("corazon");
+      c.style.transform = "rotate(-45deg) scale(1.5)";
+      setTimeout(() => {
+        c.style.transform = "rotate(-45deg) scale(1)";
+      }, 500);
+    });
+
+    // Corazones flotantes aleatorios
+    function generarCorazones() {
+      setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "floating-heart";
+        heart.textContent = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 7000);
+      }, 800);
+    }
   </script>
 </body>
 </html>
