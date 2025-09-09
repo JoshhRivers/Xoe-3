@@ -29,7 +29,6 @@
       100%{background-position:0% 50%}
     }
 
-    /* Estrellas sutiles (sobre el gradiente) */
     body::before{
       content:"";
       position:fixed;
@@ -43,7 +42,6 @@
     @keyframes starsMove{from{background-position:0 0} to{background-position:0 -220px}}
     @keyframes starsTwinkle{0%,100%{opacity:.22}50%{opacity:.45}}
 
-    /* Pantalla inicial overlay */
     #inicio{
       position:fixed;
       inset:0;
@@ -75,7 +73,6 @@
     }
     #btnIniciar:active{transform:scale(.98)}
 
-    /* Contenido */
     .container{
       position:relative;
       z-index:1;
@@ -94,7 +91,6 @@
       position:relative;
       overflow:hidden;
     }
-    /* brillo que recorre el título */
     h1::after{
       content:"";
       position:absolute;
@@ -118,7 +114,6 @@
     }
     @keyframes brillar{from{filter:brightness(.95)} to{filter:brightness(1.15)}}
 
-    /* Poema: centrado y legible en móvil */
     .poema{
       max-width:720px;
       margin:18px auto;
@@ -130,7 +125,6 @@
       padding: 0 6px;
     }
 
-    /* Corazón (emoji) - interacción */
     .corazon{
       display:inline-block;
       margin:18px auto;
@@ -139,7 +133,7 @@
       cursor:pointer;
       transition: transform .18s ease, filter .18s ease;
       -webkit-tap-highlight-color:transparent;
-      touch-action: manipulation; /* ayuda a evitar double-tap-zoom */
+      touch-action: manipulation;
       z-index:2;
       filter: drop-shadow(0 8px 30px rgba(255,30,120,.18));
       transform-origin:center;
@@ -152,7 +146,6 @@
     }
     @keyframes subtlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
-    /* Mensaje tierno */
     #mensaje{
       min-height:26px;
       margin-top:8px;
@@ -161,7 +154,14 @@
       font-weight:600;
     }
 
-    /* Modales / ventanas */
+    /* Instrucción toques */
+    #instruccion{
+      margin-top:8px;
+      color:#ffd6ec;
+      font-size:clamp(13px,3vw,16px);
+      opacity:.95;
+    }
+
     .ventana{
       position:fixed;
       inset:0;
@@ -189,11 +189,9 @@
       box-shadow:0 6px 20px rgba(255,80,150,.12);
     }
 
-    /* Mensaje final grande */
     #ventanaFinal .card{transform:scale(.85); animation:pop 420ms ease-out forwards}
     @keyframes pop{to{transform:scale(1)}}
 
-    /* corazones flotantes (pequeños) */
     .floating{
       position:fixed;
       bottom:-20px;
@@ -208,7 +206,6 @@
       to{transform:translateY(-110vh) scale(1.2); opacity:0}
     }
 
-    /* correcciones visuales móviles: espacio inferior para barra del navegador */
     @media (max-width:420px){
       body{padding-bottom:64px}
       .poema{padding:0 14px}
@@ -240,6 +237,10 @@ resuelven mi algoritmo cuando te hallo.
     </div>
 
     <div class="corazon" id="corazon" role="button" aria-label="Corazón">💖</div>
+
+    <!-- instrucción para tocar X veces -->
+    <div id="instruccion">Toca el corazón <strong id="faltan">5</strong> veces ❤️</div>
+
     <div id="mensaje" aria-live="polite"></div>
   </div>
 
@@ -271,7 +272,6 @@ resuelven mi algoritmo cuando te hallo.
   </div>
 
   <script>
-    // texto del poema (si quieres cambiarlo, editar aquí)
     const texto = `En la noche, tu luz es la más brillante,
 Más que mil estrellas en el cielo distante.
 Tu sonrisa eclipsa la luna y su reflejo,
@@ -282,91 +282,88 @@ se esconde un arte, un mundo lógico.
 Tus ojos, como variables en constante cambio,
 resuelven mi algoritmo cuando te hallo.`;
 
-    // elementos
     const btn = document.getElementById('btnIniciar');
     const inicio = document.getElementById('inicio');
     const contenido = document.getElementById('contenido');
     const poemaEl = document.getElementById('poema');
     const corazon = document.getElementById('corazon');
     const mensajeEl = document.getElementById('mensaje');
+    const faltanEl = document.getElementById('faltan');
 
-    // overlay -> mostrar contenido
+    // mensajes en orden (uno por cada toque) - el quinto toque abrirá la pregunta
+    const pasos = [
+      "Siempre estás en mi mente ✨",
+      "Tu sonrisa ilumina mi día ☀️",
+      "Me inspiras a ser mejor cada día 💪💗",
+      "Contigo todo tiene más sentido 🌙",
+      // nota: el índice 4 (5to toque) abrirá la pregunta, no se muestra como mensaje aquí
+    ];
+    const REQUERIDOS = 5;
+    let contadorToques = 0;
+
+    // Iniciar: mostrar contenido y efectos
     btn.addEventListener('click', () => {
       inicio.style.display = 'none';
       contenido.style.display = 'block';
-      poemTyping(); // efecto máquina de escribir
+      poemTyping();
       startFloatingHearts();
       startShootingStars();
       window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    /* ========== typing effect (máquina de escribir) ========== */
     function poemTyping(){
       poemaEl.textContent = '';
       let i = 0;
-      const speed = 28; // ms por carácter (ajusta si quieres más lento/rápido)
+      const speed = 28;
       (function type(){
         if(i < texto.length){
           poemaEl.textContent += texto.charAt(i);
           i++;
           setTimeout(type, speed);
         } else {
-          // al terminar muestra corazón y mensaje final pequeño
           setTimeout(()=> {
+            // mostrar corazon y instruccion cuando termine
             corazon.style.visibility = 'visible';
             corazon.style.opacity = '1';
-            // mostrar corazon (ya está en DOM)
-            // scroll para que se vea en pantallas pequeñas
             corazon.scrollIntoView({behavior:'smooth',block:'center'});
           }, 350);
         }
       })();
     }
 
-    /* ========== toques en el corazón: 1 toque / 3 toques ========= */
-    let tapTimes = []; // timestamps recientes
-    let singleTapTimer = null;
-    const TAP_WINDOW = 700; // ms para agrupar taps
-
-    const playful = [
-      "jeje, me haces cosquillas 💕",
-      "ayy, te quiero mucho 😳💗",
-      "te pienso siempre 🌙💖",
-      "me haces feliz con solo verte 💓",
-      "eres mi universo ✨"
-    ];
-
+    // Lógica nueva: cada toque = un mensaje en orden; al 5to toca abre pregunta
     corazon.addEventListener('pointerup', (ev) => {
-      // evitar que algunos navegadores hagan zoom al doble/triple toque
-      if (ev.cancelable) ev.preventDefault();
+      if (ev.cancelable) ev.preventDefault(); // ayuda a evitar zoom en algunos móviles
 
-      const now = Date.now();
-      // mantener sólo los taps dentro de la ventana
-      tapTimes = tapTimes.filter(t => now - t <= TAP_WINDOW);
-      tapTimes.push(now);
-
-      // animación rápida de zoom al tocar
+      // animación de zoom breve
       corazon.classList.add('big');
-      setTimeout(()=> corazon.classList.remove('big'), 380);
+      setTimeout(()=> corazon.classList.remove('big'), 360);
 
-      if (tapTimes.length >= 3) {
-        // triple toque detectado
-        clearTimeout(singleTapTimer);
-        tapTimes = [];
-        abrir('ventana2');
+      // si ya llegó al límite, no hacer nada
+      if (contadorToques >= REQUERIDOS) return;
+
+      contadorToques++;
+      // actualizar contador visible
+      const restantes = Math.max(0, REQUERIDOS - contadorToques);
+      if (restantes > 0) {
+        faltanEl.textContent = restantes;
       } else {
-        // esperar para decidir si es single tap
-        clearTimeout(singleTapTimer);
-        singleTapTimer = setTimeout(() => {
-          if (tapTimes.length === 1) {
-            // single tap
-            const r = playful[Math.floor(Math.random()*playful.length)];
-            mensajeEl.textContent = r;
-            // desaparece el mensaje después de 2200ms
-            setTimeout(()=> { if(mensajeEl.textContent === r) mensajeEl.textContent = ''; }, 2200);
-          }
-          tapTimes = [];
-        }, TAP_WINDOW);
+        // se llegó al quinto toque: abrir pregunta secreta
+        document.getElementById('instruccion').style.display = 'none';
+      }
+
+      // mostrar mensaje correspondiente (para toques 1..4)
+      if (contadorToques <= pasos.length) {
+        const msg = pasos[contadorToques - 1];
+        mensajeEl.textContent = msg;
+        // limpia después de unos segundos
+        setTimeout(()=> { if (mensajeEl.textContent === msg) mensajeEl.textContent = ''; }, 2600);
+      }
+
+      // si se alcanza el toque requerido, abrir modal con la pregunta
+      if (contadorToques === REQUERIDOS) {
+        // abrir pregunta (5to toque)
+        abrir('ventana2');
       }
     }, {passive:false});
 
@@ -384,19 +381,16 @@ resuelven mi algoritmo cuando te hallo.`;
     function mostrarFinal(){
       cerrar('ventana2');
       abrir('ventanaFinal');
-      // soltar lluvia de corazones grande
       dropBigHearts();
-      // cerrar ventana final después de 3.8s
       setTimeout(()=> cerrar('ventanaFinal'), 3800);
     }
 
-    /* ========== corazones flotantes pequeños (constante) ========== */
+    /* ========== corazones pequeños constantes ========== */
     function startFloatingHearts(){
       setInterval(()=> {
         const el = document.createElement('div');
         el.className = 'floating';
         el.textContent = '💖';
-        // posición y duración aleatoria
         el.style.left = (5 + Math.random()*90) + 'vw';
         el.style.fontSize = (10 + Math.random()*18) + 'px';
         el.style.animationDuration = (4 + Math.random()*4) + 's';
@@ -405,7 +399,6 @@ resuelven mi algoritmo cuando te hallo.`;
       }, 700);
     }
 
-    /* ========== lluvia de corazones grande al final ========== */
     function dropBigHearts(){
       for(let i=0;i<30;i++){
         const h = document.createElement('div');
@@ -434,7 +427,6 @@ resuelven mi algoritmo cuando te hallo.`;
         s.style.zIndex = 5;
         s.style.filter = 'blur(0.6px)';
         document.body.appendChild(s);
-        // anim
         s.animate([
           { transform:'translateX(0) rotate(35deg)', opacity:1 },
           { transform:'translateX(900px) rotate(35deg)', opacity:0 }
@@ -443,21 +435,17 @@ resuelven mi algoritmo cuando te hallo.`;
       }, 7000);
     }
 
-    // accesibilidad: cerrar ventanas al tocar fuera o con ESC
     document.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') {
         ['ventana1','ventana2','ventanaFinal'].forEach(id => cerrar(id));
       }
     });
-    // cerrar ventana 1 al tocar fuera
     ['ventana1','ventana2','ventanaFinal'].forEach(id=>{
       const v = document.getElementById(id);
       v.addEventListener('click', (ev)=> {
         if(ev.target === v) cerrar(id);
       });
     });
-
-    // PRECAUCIÓN: si quieres que el overlay pueda volver a mostrarse, puedo añadir un botón "Ver de nuevo".
   </script>
 </body>
 </html>
