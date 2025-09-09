@@ -1,209 +1,463 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Para mi amor 💖</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(to bottom, #1a0033, #4b005e);
-      font-family: "Courier New", monospace;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      overflow-y: auto;
-      text-align: center;
-      padding: 30px 20px;
+    :root{
+      --bg1:#0d001a; --bg2:#2b003a; --rose1:#ff66b2; --rose2:#ff1a75;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      padding:30px 18px;
+      font-family:"Courier New", monospace;
+      color:#fff;
+      background: linear-gradient(-45deg, var(--bg1), var(--bg2));
+      background-size:400% 400%;
+      animation:gradiente 20s linear infinite;
+      overflow-y:auto;
+      -webkit-font-smoothing:antialiased;
+      text-align:center;
+      position:relative;
+    }
+    @keyframes gradiente{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
     }
 
-    h1 {
-      font-size: 2em;
-      background: linear-gradient(45deg, #ff99cc, #ffe066);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    /* Estrellas sutiles (sobre el gradiente) */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      opacity:.22;
+      z-index:0;
+      animation:starsMove 80s linear infinite, starsTwinkle 4s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes starsMove{from{background-position:0 0} to{background-position:0 -220px}}
+    @keyframes starsTwinkle{0%,100%{opacity:.22}50%{opacity:.45}}
+
+    /* Pantalla inicial overlay */
+    #inicio{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.88);
+      z-index:40;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:18px;
+      padding:20px;
+      text-align:center;
+    }
+    #inicio h2{
+      margin:0;
+      font-size:clamp(18px,4vw,28px);
+      color:#ffd6ec;
+      text-shadow:0 0 12px rgba(255,100,170,.25);
+    }
+    #btnIniciar{
+      background: linear-gradient(45deg,var(--rose1),#ff80bf);
+      color:#fff;
+      border:none;
+      padding:12px 26px;
+      border-radius:22px;
+      font-size:1.05rem;
+      cursor:pointer;
+      box-shadow:0 6px 24px rgba(255,80,150,.18);
+    }
+    #btnIniciar:active{transform:scale(.98)}
+
+    /* Contenido */
+    .container{
+      position:relative;
+      z-index:1;
+      max-width:820px;
+      margin:0 auto;
+      width:100%;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(20px,6vw,36px);
+      letter-spacing:2px;
+      background:linear-gradient(90deg,#ffd9e8,#ffb6c1,#ffe6f2);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:0 0 12px rgba(255,150,200,.12);
+      position:relative;
+      overflow:hidden;
+    }
+    /* brillo que recorre el título */
+    h1::after{
+      content:"";
+      position:absolute;
+      top:0; left:-60%;
+      width:60%;
+      height:100%;
+      background: linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
+      animation:brillo 3s linear infinite;
+    }
+    @keyframes brillo{0%{left:-60%}100%{left:140%}}
+
+    .luna{
+      width:clamp(60px,12vw,110px);
+      height:clamp(60px,12vw,110px);
+      margin:14px auto;
+      border-radius:50%;
+      background:radial-gradient(circle,#fff 35%, #eee 60%, rgba(255,255,255,0) 100%);
+      box-shadow:0 0 40px 18px rgba(255,245,200,.12);
+      animation:brillar 4s ease-in-out infinite alternate;
+      z-index:1;
+    }
+    @keyframes brillar{from{filter:brightness(.95)} to{filter:brightness(1.15)}}
+
+    /* Poema: centrado y legible en móvil */
+    .poema{
+      max-width:720px;
+      margin:18px auto;
+      font-size:clamp(15px, 3vw, 18px);
+      line-height:1.7;
+      color: rgba(255,240,255,.92);
+      text-align:center;
+      white-space:pre-line;
+      padding: 0 6px;
     }
 
-    .poema {
-      margin: 20px 0;
-      line-height: 1.6;
-      white-space: pre-line;
-      font-size: 1.1em;
+    /* Corazón (emoji) - interacción */
+    .corazon{
+      display:inline-block;
+      margin:18px auto;
+      font-size:clamp(48px, 12vw, 120px);
+      line-height:1;
+      cursor:pointer;
+      transition: transform .18s ease, filter .18s ease;
+      -webkit-tap-highlight-color:transparent;
+      touch-action: manipulation; /* ayuda a evitar double-tap-zoom */
+      z-index:2;
+      filter: drop-shadow(0 8px 30px rgba(255,30,120,.18));
+      transform-origin:center;
+      animation: subtlePulse 3s ease-in-out infinite;
+      user-select:none;
+    }
+    .corazon.big{
+      animation:none;
+      transform:scale(1.9) !important;
+    }
+    @keyframes subtlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+    /* Mensaje tierno */
+    #mensaje{
+      min-height:26px;
+      margin-top:8px;
+      font-size:clamp(14px,3vw,18px);
+      color:#ffe066;
+      font-weight:600;
     }
 
-    /* Luna */
-    .luna {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #fff, #ddd);
-      box-shadow: 0 0 50px rgba(255,255,255,0.6);
-      margin: 20px auto;
-      animation: brillar 4s ease-in-out infinite alternate;
+    /* Modales / ventanas */
+    .ventana{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.92);
+      z-index:60;
+      padding:20px;
+      text-align:center;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+      border-radius:14px;
+      padding:18px 16px;
+      max-width:92%;
+      color:#fff;
+      box-shadow:0 10px 40px rgba(0,0,0,.6);
+    }
+    .card h2{margin:0 0 12px; font-size:clamp(18px,4vw,24px)}
+    .card .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+    .btn{
+      padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-size:1rem;
+      background: linear-gradient(45deg,var(--rose1),var(--rose2)); color:#fff;
+      box-shadow:0 6px 20px rgba(255,80,150,.12);
     }
 
-    @keyframes brillar {
-      from { box-shadow: 0 0 30px rgba(255,255,255,0.5); }
-      to { box-shadow: 0 0 60px rgba(255,255,255,0.9); }
+    /* Mensaje final grande */
+    #ventanaFinal .card{transform:scale(.85); animation:pop 420ms ease-out forwards}
+    @keyframes pop{to{transform:scale(1)}}
+
+    /* corazones flotantes (pequeños) */
+    .floating{
+      position:fixed;
+      bottom:-20px;
+      font-size:20px;
+      opacity:0;
+      pointer-events:none;
+      animation: floatUp linear forwards;
+      z-index:30;
+    }
+    @keyframes floatUp{
+      from{transform:translateY(0) scale(.6); opacity:1}
+      to{transform:translateY(-110vh) scale(1.2); opacity:0}
     }
 
-    /* Corazón */
-    .corazon {
-      font-size: 5em;
-      cursor: pointer;
-      animation: latido 1.5s infinite;
-      margin: 20px 0;
-    }
-
-    @keyframes latido {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    /* Mensajes emergentes */
-    .mensaje {
-      font-size: 1.2em;
-      margin-top: 10px;
-      color: #ffe066;
-      font-weight: bold;
-    }
-
-    /* Pregunta secreta */
-    .pregunta {
-      display: none;
-      margin-top: 20px;
-      font-size: 1.4em;
-      color: #ffb3ec;
-      font-weight: bold;
-    }
-
-    .pregunta button {
-      background: #ff66b2;
-      border: none;
-      color: white;
-      font-size: 1em;
-      margin: 10px;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .pregunta button:hover {
-      transform: scale(1.1);
-    }
-
-    /* Mensaje final */
-    .final {
-      display: none;
-      font-size: 2.5em;
-      color: #ff4da6;
-      margin-top: 30px;
-      animation: aparecer 2s ease forwards;
-    }
-
-    @keyframes aparecer {
-      from { opacity: 0; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    /* Corazones flotando */
-    .floating {
-      position: fixed;
-      bottom: 0;
-      font-size: 1.5em;
-      animation: flotar 5s linear infinite;
-    }
-
-    @keyframes flotar {
-      from { transform: translateY(0); opacity: 1; }
-      to { transform: translateY(-100vh); opacity: 0; }
+    /* correcciones visuales móviles: espacio inferior para barra del navegador */
+    @media (max-width:420px){
+      body{padding-bottom:64px}
+      .poema{padding:0 14px}
     }
   </style>
 </head>
 <body>
-  <h1>QUE LE DAS CELOS AL CIELO ✨</h1>
-  <div class="luna"></div>
-
-  <div class="poema">
-En la noche, tu luz es la más brillante,  
-Más que mil estrellas en el cielo distante.  
-Tu sonrisa eclipsa la luna y su reflejo,  
-Y tu belleza hace al universo pequeño.  
-
-Pero también, entre líneas y código,  
-se esconde un arte, un mundo lógico.  
-Tus ojos, como variables en constante cambio,  
-resuelven mi algoritmo cuando te hallo.  
+  <!-- overlay inicial -->
+  <div id="inicio" aria-hidden="false">
+    <h2>✨ Tengo algo para ti ✨</h2>
+    <button id="btnIniciar">Haz clic para ver</button>
   </div>
 
-  <div class="corazon">💖</div>
-  <div class="mensaje" id="mensaje"></div>
+  <!-- contenido principal -->
+  <div class="container" id="contenido" style="display:none;">
+    <h1>QUE LE DAS CELOS AL CIELO ✨</h1>
+    <div class="luna" aria-hidden="true"></div>
 
-  <div class="pregunta" id="pregunta">
-    ¿Quieres ser mi para siempre? 💍  
-    <br>
-    <button onclick="mostrarFinal()">Sí 💖</button>
-    <button onclick="mostrarFinal()">Obvio 😍</button>
+    <div class="poema" id="poema">
+En la noche, tu luz es la más brillante,
+Más que mil estrellas en el cielo distante.
+Tu sonrisa eclipsa la luna y su reflejo,
+Y tu belleza hace al universo pequeño.
+
+Pero también, entre líneas y código,
+se esconde un arte, un mundo lógico.
+Tus ojos, como variables en constante cambio,
+resuelven mi algoritmo cuando te hallo.
+    </div>
+
+    <div class="corazon" id="corazon" role="button" aria-label="Corazón">💖</div>
+    <div id="mensaje" aria-live="polite"></div>
   </div>
 
-  <div class="final" id="final">✨ TE AMO 💕 ✨</div>
+  <!-- ventanas -->
+  <div id="ventana1" class="ventana" aria-hidden="true">
+    <div class="card">
+      <h2>💖 Adivina quién te ama hasta las estrellas 💫</h2>
+      <div class="controls">
+        <button class="btn" onclick="cerrar('ventana1')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ventana2" class="ventana" aria-hidden="true">
+    <div class="card">
+      <h2>🌙 ¿Quieres ser mi para siempre? 💍</h2>
+      <div class="controls">
+        <button class="btn" onclick="mostrarFinal()">Sí 💖</button>
+        <button class="btn" onclick="mostrarFinal()">Obvio 😍</button>
+        <button class="btn" style="background:#666" onclick="cerrar('ventana2')">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ventanaFinal" class="ventana" aria-hidden="true">
+    <div class="card">
+      <h2>✨ TE AMO 💕 ✨</h2>
+    </div>
+  </div>
 
   <script>
-    const corazon = document.querySelector('.corazon');
-    const mensaje = document.getElementById('mensaje');
-    const pregunta = document.getElementById('pregunta');
-    const finalMsg = document.getElementById('final');
-    let clickCount = 0;
-    let clickTimer = null;
+    // texto del poema (si quieres cambiarlo, editar aquí)
+    const texto = `En la noche, tu luz es la más brillante,
+Más que mil estrellas en el cielo distante.
+Tu sonrisa eclipsa la luna y su reflejo,
+Y tu belleza hace al universo pequeño.
 
-    const frases = [
+Pero también, entre líneas y código,
+se esconde un arte, un mundo lógico.
+Tus ojos, como variables en constante cambio,
+resuelven mi algoritmo cuando te hallo.`;
+
+    // elementos
+    const btn = document.getElementById('btnIniciar');
+    const inicio = document.getElementById('inicio');
+    const contenido = document.getElementById('contenido');
+    const poemaEl = document.getElementById('poema');
+    const corazon = document.getElementById('corazon');
+    const mensajeEl = document.getElementById('mensaje');
+
+    // overlay -> mostrar contenido
+    btn.addEventListener('click', () => {
+      inicio.style.display = 'none';
+      contenido.style.display = 'block';
+      poemTyping(); // efecto máquina de escribir
+      startFloatingHearts();
+      startShootingStars();
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+
+    /* ========== typing effect (máquina de escribir) ========== */
+    function poemTyping(){
+      poemaEl.textContent = '';
+      let i = 0;
+      const speed = 28; // ms por carácter (ajusta si quieres más lento/rápido)
+      (function type(){
+        if(i < texto.length){
+          poemaEl.textContent += texto.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        } else {
+          // al terminar muestra corazón y mensaje final pequeño
+          setTimeout(()=> {
+            corazon.style.visibility = 'visible';
+            corazon.style.opacity = '1';
+            // mostrar corazon (ya está en DOM)
+            // scroll para que se vea en pantallas pequeñas
+            corazon.scrollIntoView({behavior:'smooth',block:'center'});
+          }, 350);
+        }
+      })();
+    }
+
+    /* ========== toques en el corazón: 1 toque / 3 toques ========= */
+    let tapTimes = []; // timestamps recientes
+    let singleTapTimer = null;
+    const TAP_WINDOW = 700; // ms para agrupar taps
+
+    const playful = [
       "jeje, me haces cosquillas 💕",
       "ayy, te quiero mucho 😳💗",
       "te pienso siempre 🌙💖",
-      "me haces feliz con solo tocarme 💓",
+      "me haces feliz con solo verte 💓",
       "eres mi universo ✨"
     ];
 
-    corazon.addEventListener('click', () => {
-      clickCount++;
-      if (!clickTimer) {
-        clickTimer = setTimeout(() => {
-          if (clickCount === 1) {
-            // Un solo toque
-            const random = frases[Math.floor(Math.random() * frases.length)];
-            mensaje.textContent = random;
-          } else if (clickCount === 3) {
-            // Tres toques
-            mensaje.textContent = "";
-            pregunta.style.display = "block";
+    corazon.addEventListener('pointerup', (ev) => {
+      // evitar que algunos navegadores hagan zoom al doble/triple toque
+      if (ev.cancelable) ev.preventDefault();
+
+      const now = Date.now();
+      // mantener sólo los taps dentro de la ventana
+      tapTimes = tapTimes.filter(t => now - t <= TAP_WINDOW);
+      tapTimes.push(now);
+
+      // animación rápida de zoom al tocar
+      corazon.classList.add('big');
+      setTimeout(()=> corazon.classList.remove('big'), 380);
+
+      if (tapTimes.length >= 3) {
+        // triple toque detectado
+        clearTimeout(singleTapTimer);
+        tapTimes = [];
+        abrir('ventana2');
+      } else {
+        // esperar para decidir si es single tap
+        clearTimeout(singleTapTimer);
+        singleTapTimer = setTimeout(() => {
+          if (tapTimes.length === 1) {
+            // single tap
+            const r = playful[Math.floor(Math.random()*playful.length)];
+            mensajeEl.textContent = r;
+            // desaparece el mensaje después de 2200ms
+            setTimeout(()=> { if(mensajeEl.textContent === r) mensajeEl.textContent = ''; }, 2200);
           }
-          clickCount = 0;
-          clickTimer = null;
-        }, 500);
+          tapTimes = [];
+        }, TAP_WINDOW);
+      }
+    }, {passive:false});
+
+    /* ========== modales ========== */
+    function abrir(id){
+      const el = document.getElementById(id);
+      el.style.display = 'flex';
+      el.setAttribute('aria-hidden','false');
+    }
+    function cerrar(id){
+      const el = document.getElementById(id);
+      el.style.display = 'none';
+      el.setAttribute('aria-hidden','true');
+    }
+    function mostrarFinal(){
+      cerrar('ventana2');
+      abrir('ventanaFinal');
+      // soltar lluvia de corazones grande
+      dropBigHearts();
+      // cerrar ventana final después de 3.8s
+      setTimeout(()=> cerrar('ventanaFinal'), 3800);
+    }
+
+    /* ========== corazones flotantes pequeños (constante) ========== */
+    function startFloatingHearts(){
+      setInterval(()=> {
+        const el = document.createElement('div');
+        el.className = 'floating';
+        el.textContent = '💖';
+        // posición y duración aleatoria
+        el.style.left = (5 + Math.random()*90) + 'vw';
+        el.style.fontSize = (10 + Math.random()*18) + 'px';
+        el.style.animationDuration = (4 + Math.random()*4) + 's';
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 6000);
+      }, 700);
+    }
+
+    /* ========== lluvia de corazones grande al final ========== */
+    function dropBigHearts(){
+      for(let i=0;i<30;i++){
+        const h = document.createElement('div');
+        h.className='floating';
+        h.textContent = '💖';
+        h.style.left = Math.random()*100 + 'vw';
+        const size = 28 + Math.random()*64;
+        h.style.fontSize = size + 'px';
+        h.style.animationDuration = (3 + Math.random()*3) + 's';
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 5200);
+      }
+    }
+
+    /* ========== estrellas fugaces ========= */
+    function startShootingStars(){
+      setInterval(()=> {
+        const s = document.createElement('div');
+        s.style.position='fixed';
+        s.style.width='160px';
+        s.style.height='2px';
+        s.style.background='linear-gradient(90deg, rgba(255,255,255,.95), rgba(255,255,255,0))';
+        s.style.top = (10 + Math.random()*60) + 'vh';
+        s.style.left = (-30 + Math.random()*10) + 'vw';
+        s.style.transform = 'rotate(35deg)';
+        s.style.zIndex = 5;
+        s.style.filter = 'blur(0.6px)';
+        document.body.appendChild(s);
+        // anim
+        s.animate([
+          { transform:'translateX(0) rotate(35deg)', opacity:1 },
+          { transform:'translateX(900px) rotate(35deg)', opacity:0 }
+        ], { duration: 2400, easing:'linear' });
+        setTimeout(()=> s.remove(), 2400);
+      }, 7000);
+    }
+
+    // accesibilidad: cerrar ventanas al tocar fuera o con ESC
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') {
+        ['ventana1','ventana2','ventanaFinal'].forEach(id => cerrar(id));
       }
     });
+    // cerrar ventana 1 al tocar fuera
+    ['ventana1','ventana2','ventanaFinal'].forEach(id=>{
+      const v = document.getElementById(id);
+      v.addEventListener('click', (ev)=> {
+        if(ev.target === v) cerrar(id);
+      });
+    });
 
-    function mostrarFinal() {
-      pregunta.style.display = "none";
-      finalMsg.style.display = "block";
-      soltarCorazones();
-    }
-
-    function soltarCorazones() {
-      for (let i = 0; i < 20; i++) {
-        const heart = document.createElement("div");
-        heart.className = "floating";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (3 + Math.random() * 2) + "s";
-        heart.textContent = "💖";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }
-    }
+    // PRECAUCIÓN: si quieres que el overlay pueda volver a mostrarse, puedo añadir un botón "Ver de nuevo".
   </script>
 </body>
 </html>
