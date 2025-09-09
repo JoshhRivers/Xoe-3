@@ -135,7 +135,7 @@
   <!-- Pantalla inicial -->
   <div id="inicio">
     <h2>✨ Tengo algo para ti ✨</h2>
-    <button onclick="empezar()">Haz clic para ver</button>
+    <button id="btnIniciar">Haz clic para ver</button>
   </div>
 
   <!-- Música -->
@@ -149,7 +149,7 @@
     <p class="espera">espera...</p>
     <p id="poema" class="texto"></p>
 
-    <div class="corazon" id="corazon" onclick="corazonClick()"></div>
+    <div class="corazon" id="corazon"></div>
     <p id="final">✨ Buenas noches, mi amor. Que sueñes tan bonito como tú 💖 🌙</p>
   </div>
 
@@ -166,32 +166,35 @@ resuelven mi algoritmo cuando te hallo.`;
 
     sea ​​yo = 0;
 
-    function empezar() {
-      document.getElementById ("inicio"). estilo.display = "ninguno";
-      document.getElementById ("contenido"). estilo.display = "bloque";
-      document.getElementById ("música").play();
+    // Iniciar con botón
+    document.getElementById ("btnIniciar").addEventListener("click", () => {
+      document.getElementById ("inicio").remove(); // eliminar la capa inicial
+      document.getElementById ("contenido"). style.display = "block";
+      document.getElementById ("musica").play().catch(()=>{}); // play seguro
       escribir();
-    }
+    });
 
+    // Efecto de escritura
     function escribir() {
       if (i < texto.length ) {
         document.getElementById ("poema").textContent += texto.charAt (i);
-        i++;
+        yo ++;
         setTimeout(escribir, 50);
       } else {
-        document.getElementById ("corazón"). style.display = "block";
+        document.getElementById ("corazón"). estilo.display = "bloque";
         setTimeout(() => {
-          document.getElementById ("final"). style.display = "block";
+          document.getElementById ("final"). style.display = "bloque";
         }, 1000 );
       }
     }
 
-    function corazonClick() {
-      let c = document.getElementById ("corazón");
+    // Corazón interactivo
+    document.getElementById ("corazon").addEventListener("click", () => {
+      let c = document.getElementById ("corazon");
       c.style.transform = "rotate(-45deg) scale( 1.5 )";
       setTimeout(() => {
         c.style.transform = "rotate(-45deg) scale(1)";
       }, 500 );
-    }
+    });
   </script>
 </body> </html>
