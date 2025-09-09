@@ -19,28 +19,13 @@
       background-size:400% 400%;
       animation:gradiente 20s linear infinite;
       overflow-y:auto;
-      -webkit-font-smoothing:antialiased;
       text-align:center;
-      position:relative;
     }
     @keyframes gradiente{
       0%{background-position:0% 50%}
       50%{background-position:100% 50%}
       100%{background-position:0% 50%}
     }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      background:url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-      opacity:.22;
-      z-index:0;
-      animation:starsMove 80s linear infinite, starsTwinkle 4s ease-in-out infinite;
-      pointer-events:none;
-    }
-    @keyframes starsMove{from{background-position:0 0} to{background-position:0 -220px}}
-    @keyframes starsTwinkle{0%,100%{opacity:.22}50%{opacity:.45}}
 
     #inicio{
       position:fixed;
@@ -55,175 +40,60 @@
       padding:20px;
       text-align:center;
     }
-    #inicio h2{
-      margin:0;
-      font-size:clamp(18px,4vw,28px);
-      color:#ffd6ec;
-      text-shadow:0 0 12px rgba(255,100,170,.25);
-    }
+    #inicio h2{color:#ffd6ec;}
     #btnIniciar{
       background: linear-gradient(45deg,var(--rose1),#ff80bf);
-      color:#fff;
-      border:none;
-      padding:12px 26px;
-      border-radius:22px;
-      font-size:1.05rem;
-      cursor:pointer;
-      box-shadow:0 6px 24px rgba(255,80,150,.18);
+      color:#fff; border:none; padding:12px 26px;
+      border-radius:22px; cursor:pointer;
     }
-    #btnIniciar:active{transform:scale(.98)}
 
-    .container{
-      position:relative;
-      z-index:1;
-      max-width:820px;
-      margin:0 auto;
-      width:100%;
-    }
+    .container{max-width:820px;margin:0 auto}
     h1{
-      margin:0 0 8px;
       font-size:clamp(20px,6vw,36px);
-      letter-spacing:2px;
       background:linear-gradient(90deg,#ffd9e8,#ffb6c1,#ffe6f2);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
-      text-shadow:0 0 12px rgba(255,150,200,.12);
-      position:relative;
-      overflow:hidden;
     }
-    h1::after{
-      content:"";
-      position:absolute;
-      top:0; left:-60%;
-      width:60%;
-      height:100%;
-      background: linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
-      animation:brillo 3s linear infinite;
-    }
-    @keyframes brillo{0%{left:-60%}100%{left:140%}}
 
     .luna{
-      width:clamp(60px,12vw,110px);
-      height:clamp(60px,12vw,110px);
-      margin:14px auto;
-      border-radius:50%;
+      width:100px;height:100px;margin:14px auto;border-radius:50%;
       background:radial-gradient(circle,#fff 35%, #eee 60%, rgba(255,255,255,0) 100%);
-      box-shadow:0 0 40px 18px rgba(255,245,200,.12);
-      animation:brillar 4s ease-in-out infinite alternate;
-      z-index:1;
-    }
-    @keyframes brillar{from{filter:brightness(.95)} to{filter:brightness(1.15)}}
-
-    .poema{
-      max-width:720px;
-      margin:18px auto;
-      font-size:clamp(15px, 3vw, 18px);
-      line-height:1.7;
-      color: rgba(255,240,255,.92);
-      text-align:center;
-      white-space:pre-line;
-      padding: 0 6px;
     }
 
-    .corazon{
-      display:inline-block;
-      margin:18px auto;
-      font-size:clamp(48px, 12vw, 120px);
-      line-height:1;
-      cursor:pointer;
-      transition: transform .18s ease, filter .18s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action: manipulation;
-      z-index:2;
-      filter: drop-shadow(0 8px 30px rgba(255,30,120,.18));
-      transform-origin:center;
-      animation: subtlePulse 3s ease-in-out infinite;
-      user-select:none;
-    }
-    .corazon.big{
-      animation:none;
-      transform:scale(1.9) !important;
-    }
-    @keyframes subtlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .poema{white-space:pre-line;font-size:16px;margin:18px auto;color:#ffe}
+    .corazon{font-size:100px;cursor:pointer;animation:pulse 3s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    .corazon.big{transform:scale(1.7)!important}
 
-    #mensaje{
-      min-height:26px;
-      margin-top:8px;
-      font-size:clamp(14px,3vw,18px);
-      color:#ffe066;
-      font-weight:600;
-    }
-
-    /* Instrucción toques */
-    #instruccion{
-      margin-top:8px;
-      color:#ffd6ec;
-      font-size:clamp(13px,3vw,16px);
-      opacity:.95;
-    }
+    #mensaje{margin-top:10px;color:#ffe066;font-weight:600}
+    #instruccion{margin-top:8px;color:#ffd6ec;}
 
     .ventana{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.92);
-      z-index:60;
-      padding:20px;
-      text-align:center;
+      position:fixed;inset:0;display:none;
+      align-items:center;justify-content:center;
+      background:rgba(0,0,0,.9);z-index:60;
+      text-align:center;padding:20px;
     }
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-      border-radius:14px;
-      padding:18px 16px;
-      max-width:92%;
-      color:#fff;
-      box-shadow:0 10px 40px rgba(0,0,0,.6);
-    }
-    .card h2{margin:0 0 12px; font-size:clamp(18px,4vw,24px)}
-    .card .controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-    .btn{
-      padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-size:1rem;
-      background: linear-gradient(45deg,var(--rose1),var(--rose2)); color:#fff;
-      box-shadow:0 6px 20px rgba(255,80,150,.12);
-    }
-
-    #ventanaFinal .card{transform:scale(.85); animation:pop 420ms ease-out forwards}
-    @keyframes pop{to{transform:scale(1)}}
-
+    .card{background:rgba(255,255,255,.05);padding:20px;border-radius:12px}
+    .card h2{margin:0;color:#fff}
     .floating{
-      position:fixed;
-      bottom:-20px;
-      font-size:20px;
-      opacity:0;
-      pointer-events:none;
-      animation: floatUp linear forwards;
-      z-index:30;
+      position:fixed;bottom:-20px;animation: floatUp linear forwards;
     }
     @keyframes floatUp{
       from{transform:translateY(0) scale(.6); opacity:1}
       to{transform:translateY(-110vh) scale(1.2); opacity:0}
     }
-
-    @media (max-width:420px){
-      body{padding-bottom:64px}
-      .poema{padding:0 14px}
-    }
   </style>
 </head>
 <body>
-  <!-- overlay inicial -->
-  <div id="inicio" aria-hidden="false">
+  <div id="inicio">
     <h2>✨ Tengo algo para ti ✨</h2>
     <button id="btnIniciar">Haz clic para ver</button>
   </div>
 
-  <!-- contenido principal -->
   <div class="container" id="contenido" style="display:none;">
     <h1>QUE LE DAS CELOS AL CIELO ✨</h1>
-    <div class="luna" aria-hidden="true"></div>
-
+    <div class="luna"></div>
     <div class="poema" id="poema">
 En la noche, tu luz es la más brillante,
 Más que mil estrellas en el cielo distante.
@@ -236,216 +106,85 @@ Tus ojos, como variables en constante cambio,
 resuelven mi algoritmo cuando te hallo.
     </div>
 
-    <div class="corazon" id="corazon" role="button" aria-label="Corazón">💖</div>
-
-    <!-- instrucción para tocar X veces -->
+    <div class="corazon" id="corazon">💖</div>
     <div id="instruccion">Toca el corazón <strong id="faltan">5</strong> veces ❤️</div>
-
-    <div id="mensaje" aria-live="polite"></div>
+    <div id="mensaje"></div>
   </div>
 
-  <!-- ventanas -->
-  <div id="ventana1" class="ventana" aria-hidden="true">
-    <div class="card">
-      <h2>💖 Adivina quién te ama hasta las estrellas 💫</h2>
-      <div class="controls">
-        <button class="btn" onclick="cerrar('ventana1')">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="ventana2" class="ventana" aria-hidden="true">
+  <!-- Ventana pregunta -->
+  <div id="ventanaPregunta" class="ventana">
     <div class="card">
       <h2>🌙 ¿Quieres ser mi para siempre? 💍</h2>
-      <div class="controls">
-        <button class="btn" onclick="mostrarFinal()">Sí 💖</button>
-        <button class="btn" onclick="mostrarFinal()">Obvio 😍</button>
-        <button class="btn" style="background:#666" onclick="cerrar('ventana2')">Cancelar</button>
-      </div>
     </div>
   </div>
 
-  <div id="ventanaFinal" class="ventana" aria-hidden="true">
-    <div class="card">
-      <h2>✨ TE AMO 💕 ✨</h2>
-    </div>
+  <!-- Ventana final -->
+  <div id="ventanaFinal" class="ventana">
+    <div class="card"><h2>✨ TE AMO 💕 ✨</h2></div>
   </div>
 
   <script>
-    const texto = `En la noche, tu luz es la más brillante,
-Más que mil estrellas en el cielo distante.
-Tu sonrisa eclipsa la luna y su reflejo,
-Y tu belleza hace al universo pequeño.
-
-Pero también, entre líneas y código,
-se esconde un arte, un mundo lógico.
-Tus ojos, como variables en constante cambio,
-resuelven mi algoritmo cuando te hallo.`;
-
     const btn = document.getElementById('btnIniciar');
     const inicio = document.getElementById('inicio');
     const contenido = document.getElementById('contenido');
-    const poemaEl = document.getElementById('poema');
     const corazon = document.getElementById('corazon');
     const mensajeEl = document.getElementById('mensaje');
     const faltanEl = document.getElementById('faltan');
+    const REQUERIDOS = 5;
+    let contador = 0;
 
-    // mensajes en orden (uno por cada toque) - el quinto toque abrirá la pregunta
     const pasos = [
       "Siempre estás en mi mente ✨",
       "Tu sonrisa ilumina mi día ☀️",
-      "Me inspiras a ser mejor cada día 💪💗",
-      "Contigo todo tiene más sentido 🌙",
-      // nota: el índice 4 (5to toque) abrirá la pregunta, no se muestra como mensaje aquí
+      "Me inspiras a ser mejor 💪💗",
+      "Contigo todo tiene más sentido 🌙"
     ];
-    const REQUERIDOS = 5;
-    let contadorToques = 0;
 
-    // Iniciar: mostrar contenido y efectos
     btn.addEventListener('click', () => {
       inicio.style.display = 'none';
       contenido.style.display = 'block';
-      poemTyping();
-      startFloatingHearts();
-      startShootingStars();
-      window.scrollTo({top:0,behavior:'smooth'});
     });
 
-    function poemTyping(){
-      poemaEl.textContent = '';
-      let i = 0;
-      const speed = 28;
-      (function type(){
-        if(i < texto.length){
-          poemaEl.textContent += texto.charAt(i);
-          i++;
-          setTimeout(type, speed);
-        } else {
-          setTimeout(()=> {
-            // mostrar corazon y instruccion cuando termine
-            corazon.style.visibility = 'visible';
-            corazon.style.opacity = '1';
-            corazon.scrollIntoView({behavior:'smooth',block:'center'});
-          }, 350);
-        }
-      })();
-    }
-
-    // Lógica nueva: cada toque = un mensaje en orden; al 5to toca abre pregunta
-    corazon.addEventListener('pointerup', (ev) => {
-      if (ev.cancelable) ev.preventDefault(); // ayuda a evitar zoom en algunos móviles
-
-      // animación de zoom breve
+    corazon.addEventListener('click', () => {
+      contador++;
       corazon.classList.add('big');
-      setTimeout(()=> corazon.classList.remove('big'), 360);
+      setTimeout(()=>corazon.classList.remove('big'),300);
 
-      // si ya llegó al límite, no hacer nada
-      if (contadorToques >= REQUERIDOS) return;
+      const restantes = REQUERIDOS - contador;
+      if(restantes >= 0) faltanEl.textContent = restantes;
 
-      contadorToques++;
-      // actualizar contador visible
-      const restantes = Math.max(0, REQUERIDOS - contadorToques);
-      if (restantes > 0) {
-        faltanEl.textContent = restantes;
-      } else {
-        // se llegó al quinto toque: abrir pregunta secreta
-        document.getElementById('instruccion').style.display = 'none';
-      }
-
-      // mostrar mensaje correspondiente (para toques 1..4)
-      if (contadorToques <= pasos.length) {
-        const msg = pasos[contadorToques - 1];
+      if(contador <= pasos.length){
+        const msg = pasos[contador-1];
         mensajeEl.textContent = msg;
-        // limpia después de unos segundos
-        setTimeout(()=> { if (mensajeEl.textContent === msg) mensajeEl.textContent = ''; }, 2600);
+        setTimeout(()=>{ if(mensajeEl.textContent===msg) mensajeEl.textContent=""; },2200);
       }
 
-      // si se alcanza el toque requerido, abrir modal con la pregunta
-      if (contadorToques === REQUERIDOS) {
-        // abrir pregunta (5to toque)
-        abrir('ventana2');
+      if(contador === REQUERIDOS){
+        abrir('ventanaPregunta');
+        setTimeout(()=>{
+          cerrar('ventanaPregunta');
+          abrir('ventanaFinal');
+          lluviaCorazones();
+          setTimeout(()=>cerrar('ventanaFinal'), 4000);
+        }, 4000);
       }
-    }, {passive:false});
+    });
 
-    /* ========== modales ========== */
-    function abrir(id){
-      const el = document.getElementById(id);
-      el.style.display = 'flex';
-      el.setAttribute('aria-hidden','false');
-    }
-    function cerrar(id){
-      const el = document.getElementById(id);
-      el.style.display = 'none';
-      el.setAttribute('aria-hidden','true');
-    }
-    function mostrarFinal(){
-      cerrar('ventana2');
-      abrir('ventanaFinal');
-      dropBigHearts();
-      setTimeout(()=> cerrar('ventanaFinal'), 3800);
-    }
+    function abrir(id){document.getElementById(id).style.display='flex';}
+    function cerrar(id){document.getElementById(id).style.display='none';}
 
-    /* ========== corazones pequeños constantes ========== */
-    function startFloatingHearts(){
-      setInterval(()=> {
-        const el = document.createElement('div');
-        el.className = 'floating';
-        el.textContent = '💖';
-        el.style.left = (5 + Math.random()*90) + 'vw';
-        el.style.fontSize = (10 + Math.random()*18) + 'px';
-        el.style.animationDuration = (4 + Math.random()*4) + 's';
+    function lluviaCorazones(){
+      for(let i=0;i<25;i++){
+        const el=document.createElement('div');
+        el.className='floating';
+        el.textContent='💖';
+        el.style.left=(Math.random()*100)+'vw';
+        el.style.fontSize=(20+Math.random()*40)+'px';
+        el.style.animationDuration=(3+Math.random()*3)+'s';
         document.body.appendChild(el);
-        setTimeout(()=> el.remove(), 6000);
-      }, 700);
-    }
-
-    function dropBigHearts(){
-      for(let i=0;i<30;i++){
-        const h = document.createElement('div');
-        h.className='floating';
-        h.textContent = '💖';
-        h.style.left = Math.random()*100 + 'vw';
-        const size = 28 + Math.random()*64;
-        h.style.fontSize = size + 'px';
-        h.style.animationDuration = (3 + Math.random()*3) + 's';
-        document.body.appendChild(h);
-        setTimeout(()=> h.remove(), 5200);
+        setTimeout(()=>el.remove(),5000);
       }
     }
-
-    /* ========== estrellas fugaces ========= */
-    function startShootingStars(){
-      setInterval(()=> {
-        const s = document.createElement('div');
-        s.style.position='fixed';
-        s.style.width='160px';
-        s.style.height='2px';
-        s.style.background='linear-gradient(90deg, rgba(255,255,255,.95), rgba(255,255,255,0))';
-        s.style.top = (10 + Math.random()*60) + 'vh';
-        s.style.left = (-30 + Math.random()*10) + 'vw';
-        s.style.transform = 'rotate(35deg)';
-        s.style.zIndex = 5;
-        s.style.filter = 'blur(0.6px)';
-        document.body.appendChild(s);
-        s.animate([
-          { transform:'translateX(0) rotate(35deg)', opacity:1 },
-          { transform:'translateX(900px) rotate(35deg)', opacity:0 }
-        ], { duration: 2400, easing:'linear' });
-        setTimeout(()=> s.remove(), 2400);
-      }, 7000);
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') {
-        ['ventana1','ventana2','ventanaFinal'].forEach(id => cerrar(id));
-      }
-    });
-    ['ventana1','ventana2','ventanaFinal'].forEach(id=>{
-      const v = document.getElementById(id);
-      v.addEventListener('click', (ev)=> {
-        if(ev.target === v) cerrar(id);
-      });
-    });
   </script>
 </body>
 </html>
