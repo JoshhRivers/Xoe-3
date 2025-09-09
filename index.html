@@ -28,9 +28,11 @@
 
     /* Fondo con gradiente animado */
     body {
-      background: linear-gradient(-45deg, #000010, #1a0029, #330033, #000010);
+      background: linear-gradient(-45deg, #0d001a, #1a0033, #330033, #0d001a);
       background-size: 400% 400%;
       animation: gradiente 20s ease infinite;
+      position: relative;
+      z-index: 0;
     }
     @keyframes gradiente {
       0%   { background-position: 0% 50%; }
@@ -42,15 +44,21 @@
     body::before {
       content: "";
       position: absolute;
-      inset: -50%;
-      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-      animation: stars 80s linear infinite;
+      inset: 0;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      opacity: 0.25;
       z-index: -1;
-      opacity: .7;
+      animation: starsMove 80s linear infinite, starsTwinkle 4s ease-in-out infinite;
     }
-    @keyframes stars {
-      from { transform: translateY(0); }
-      to { transform: translateY(-200px); }
+
+    @keyframes starsMove {
+      from { background-position: 0 0; }
+      to   { background-position: 0 -200px; }
+    }
+
+    @keyframes starsTwinkle {
+      0%, 100% { opacity: 0.25; }
+      50%      { opacity: 0.5; }
     }
 
     /* Pantalla inicial */
