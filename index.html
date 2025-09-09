@@ -164,26 +164,36 @@ se esconde un arte, un mundo lógico.
 Tus ojos, como variables en constante cambio,
 resuelven mi algoritmo cuando te hallo.`;
 
-    sea ​​yo = 0;
+    let i = 0;
+    const btn = document.getElementById("btnIniciar");
+    const inicio = document.getElementById("inicio");
+    const contenido = document.getElementById("contenido");
+    const musica = document.getElementById("musica");
+    const poema = documentElementById("poema");
 
     // Iniciar con botón
-    document.getElementById ("btnIniciar").addEventListener("click", () => {
-      document.getElementById ("inicio").remove(); // eliminar la capa inicial
-      document.getElementById ("contenido"). style.display = "block";
-      document.getElementById ("musica").play().catch(()=>{}); // play seguro
-      escribir();
+    btn.addEventListener("click", async () => {
+      try {
+        await musica.play(); //desbloquear musica
+      } catch(e) {
+        console.log("El audio no se pudo reproducir aun: ", e);
+      }
+
+      inicio.remove(); //elimina la pantalla principal 
+      contenido.style.display = "block"; //muestra el contenido 
+      escribir(); //arranca el efecto de escritura 
     });
 
     // Efecto de escritura
     function escribir() {
       if (i < texto.length ) {
-        document.getElementById ("poema").textContent += texto.charAt (i);
-        yo ++;
+        poema.textContent += texto.charAt(i);
+        i++;
         setTimeout(escribir, 50);
       } else {
-        document.getElementById ("corazón"). estilo.display = "bloque";
+        document.getElementById ("corazón"). style.display = "block";
         setTimeout(() => {
-          document.getElementById ("final"). style.display = "bloque";
+          document.getElementById ("final"). style.display = "block";
         }, 1000 );
       }
     }
