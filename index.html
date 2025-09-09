@@ -2,127 +2,154 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale= 1.0 ">
   <title>Buenas noches, amor 💖</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      height: 100 vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
       background: black;
       color: white;
       font-family: 'Courier New', monospace;
       overflow: hidden;
+      text-align: center;
     }
 
-    /* Fondo con estrellas */
+    /* Fondo estrellado */
     body::before {
       content: "";
       position: absolute;
-      width: 200%;
-      height: 200%;
-      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      width: 200 %;
+      height: 200 %;
+      background: transparent url(' https://www.transparenttextures.com/patterns/stardust.png ') repeat;
       animation: stars 60s linear infinite;
       z-index: -1;
     }
-
     @keyframes stars {
-      from { transform: translateY(0); }
-      to { transform: translateY(-100px); }
+      de { transform: translateY(0); }
+      a { transform: translateY(- 100 px); }
+    }
+
+    /* Pantalla inicial */
+    #inicio {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0, 0.9 );
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    #inicio button {
+      background: #ff 4081 ;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2 em;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 0 20 px #ff 4081 ;
+      transition: 0.3 s;
+    }
+    #inicio button:hover {
+      background: #e91e63;
+      transform: scale( 1.1 );
     }
 
     h1 {
-      font-size: 2em;
-      text-shadow: 0 0 15px #fff, 0 0 30px #0ff;
+      tamaño de fuente: 1.6 em;
+      sombra de texto: 0 0 15 px #fff, 0 0 30 px #0ff;
+      margen superior: 10px;
     }
 
     .espera {
-      font-weight: bold;
+      peso de fuente: negrita;
       color: #ffff99;
-      font-size: 1.3em;
-      margin: 20px 0;
+      tamaño de fuente: 1.1 em;
+      margen: 10px 0;
     }
 
     .texto {
-      font-size: 1.2em;
-      max-width: 600px;
+      font-size: 1em;
+      max-width: 90%;
       margin: 10px auto;
-      line-height: 1.8;
+      line-height: 1.6 ;
       white-space: pre-line;
       border-right: 2px solid #fff;
       display: inline-block;
       overflow: hidden;
-      animation: blink 0.8s infinite;
+      animation: blink 0.8 s infinite;
     }
-
     @keyframes blink {
       50% { border-color: transparent; }
     }
 
-    /* Corazón animado */
+    /* Corazón interactivo */
     .corazon {
-      width: 100px;
-      height: 90px;
+      width: 80px;
+      height: 70px;
       background: red;
       position: relative;
-      margin: 30px auto;
+      margin: 20px auto;
       transform: rotate(-45deg);
       animation: latido 1s infinite;
-      display: none; /* oculto hasta que termine el poema */
+      display: none;
+      cursor: pointer;
     }
     .corazon::before, .corazon::after {
       content: "";
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       background: red;
       border-radius: 50%;
       position: absolute;
     }
-    .corazon::before {
-      top: -50px;
-      left: 0;
-    }
-    .corazon::after {
-      left: 50px;
-      top: 0;
-    }
+    .corazon::antes { arriba: -40px; izquierda: 0; }
+    .corazon::después { izquierda: 40px; arriba: 0; }
     @keyframes latido {
-      0%, 100% { transform: rotate(-45deg) scale(1); }
-      50% { transform: rotate(-45deg) scale(1.2); }
+      0%, 100 % { transform: rotate(-45deg) scale(1); }
+      50% { transform: rotate(-45deg) scale( 1.2 ); }
     }
 
     /* Mensaje final */
     #final {
       display: none;
-      font-size: 1.5em;
-      margin-top: 20px;
+      font-size: 1.2 em;
+      margin-top: 15px;
       color: #ffefba;
-      text-shadow: 0 0 10px #f0f;
+      text-shadow: 0 0 10 px #f0f;
       animation: aparecer 2s ease-in-out forwards;
     }
-
     @keyframes aparecer {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      desde { opacidad: 0; transform: translateY(20px); }
+      hasta { opacidad: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <!-- Música de fondo -->
-  <audio autoplay loop>
+  <!-- Pantalla inicial -->
+  <div id="inicio">
+    <h2>✨ Tengo algo para ti ✨</h2>
+    <button onclick="empezar()">Haz clic para ver</button>
+  </div>
+
+  <!-- Música -->
+  <audio id="musica" loop>
     <source src="cancion.mp3" type="audio/mpeg">
   </audio>
 
-  <div>
+  <!-- Contenido sorpresa -->
+  <div id="contenido" style="display:none;">
     <h1>QUE LE DAS CELOS AL CIELO</h1>
     <p class="espera">espera...</p>
     <p id="poema" class="texto"></p>
 
-    <div class="corazon" id="corazon"></div>
+    <div class="corazon" id="corazon" onclick="corazonClick()"></div>
     <p id="final">✨ Buenas noches, mi amor. Que sueñes tan bonito como tú 💖 🌙</p>
   </div>
 
@@ -137,22 +164,34 @@ se esconde un arte, un mundo lógico.
 Tus ojos, como variables en constante cambio,
 resuelven mi algoritmo cuando te hallo.`;
 
-    let i = 0;
+    sea ​​yo = 0;
+
+    function empezar() {
+      document.getElementById ("inicio"). estilo.display = "ninguno";
+      document.getElementById ("contenido"). estilo.display = "bloque";
+      document.getElementById ("música").play();
+      escribir();
+    }
+
     function escribir() {
-      if (i < texto.length) {
-        document.getElementById("poema").textContent += texto.charAt(i);
+      if (i < texto.length ) {
+        document.getElementById ("poema").textContent += texto.charAt (i);
         i++;
-        setTimeout(escribir, 50); // velocidad de escritura
+        setTimeout(escribir, 50);
       } else {
-        // Cuando termine el texto, mostrar corazón y mensaje final
-        document.getElementById("corazon").style.display = "block";
+        document.getElementById ("corazón"). style.display = "block";
         setTimeout(() => {
-          document.getElementById("final").style.display = "block";
-        }, 1000);
+          document.getElementById ("final"). style.display = "block";
+        }, 1000 );
       }
     }
 
-    window.onload = escribir;
+    function corazonClick() {
+      let c = document.getElementById ("corazón");
+      c.style.transform = "rotate(-45deg) scale( 1.5 )";
+      setTimeout(() => {
+        c.style.transform = "rotate(-45deg) scale(1)";
+      }, 500 );
+    }
   </script>
-</body>
-</html>
+</body> </html>
