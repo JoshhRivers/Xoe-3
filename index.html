@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale= 1.0 ">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buenas noches, amor 💖</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      height: 100 vh;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -23,67 +23,68 @@
     body::before {
       content: "";
       position: absolute;
-      width: 200 %;
-      height: 200 %;
-      background: transparent url(' https://www.transparenttextures.com/patterns/stardust.png ') repeat;
-      animation: stars 60s linear infinite;
+      width: 200%;
+      height: 200%;
+      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      animation: stars 80s linear infinite;
       z-index: -1;
     }
     @keyframes stars {
-      de { transform: translateY(0); }
-      a { transform: translateY(- 100 px); }
+      from { transform: translateY(0); }
+      to { transform: translateY(-200px); }
     }
 
     /* Pantalla inicial */
     #inicio {
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0, 0.9 );
+      background: rgba(0,0,0,0.9);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 20px;
       z-index: 10;
     }
     #inicio button {
-      background: #ff 4081 ;
+      background: #ff4081;
       color: white;
       border: none;
-      padding: 15px 30px;
-      font-size: 1.2 em;
+      padding: 12px 25px;
+      font-size: 1.2em;
       border-radius: 25px;
       cursor: pointer;
-      box-shadow: 0 0 20 px #ff 4081 ;
-      transition: 0.3 s;
+      box-shadow: 0 0 15px #ff4081;
+      transition: 0.3s;
     }
     #inicio button:hover {
       background: #e91e63;
-      transform: scale( 1.1 );
+      transform: scale(1.05);
     }
 
     h1 {
-      tamaño de fuente: 1.6 em;
-      sombra de texto: 0 0 15 px #fff, 0 0 30 px #0ff;
-      margen superior: 10px;
+      font-size: 1.6em;
+      text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
+      margin-top: 10px;
     }
 
     .espera {
-      peso de fuente: negrita;
+      font-weight: bold;
       color: #ffff99;
-      tamaño de fuente: 1.1 em;
-      margen: 10px 0;
+      font-size: 1.1em;
+      margin: 10px 0;
     }
 
     .texto {
       font-size: 1em;
       max-width: 90%;
       margin: 10px auto;
-      line-height: 1.6 ;
+      line-height: 1.6;
       white-space: pre-line;
       border-right: 2px solid #fff;
       display: inline-block;
       overflow: hidden;
-      animation: blink 0.8 s infinite;
+      animation: blink 0.8s infinite;
     }
     @keyframes blink {
       50% { border-color: transparent; }
@@ -91,43 +92,57 @@
 
     /* Corazón interactivo */
     .corazon {
-      width: 80px;
-      height: 70px;
+      width: 70px;
+      height: 60px;
       background: red;
       position: relative;
       margin: 20px auto;
       transform: rotate(-45deg);
-      animation: latido 1s infinite;
+      animation: latido 1.5s ease-in-out infinite;
       display: none;
       cursor: pointer;
     }
     .corazon::before, .corazon::after {
       content: "";
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       background: red;
       border-radius: 50%;
       position: absolute;
     }
-    .corazon::antes { arriba: -40px; izquierda: 0; }
-    .corazon::después { izquierda: 40px; arriba: 0; }
+    .corazon::before { top: -35px; left: 0; }
+    .corazon::after { left: 35px; top: 0; }
+
     @keyframes latido {
-      0%, 100 % { transform: rotate(-45deg) scale(1); }
-      50% { transform: rotate(-45deg) scale( 1.2 ); }
+      0%, 100% { transform: rotate(-45deg) scale(1); }
+      25% { transform: rotate(-45deg) scale(1.15); }
+      50% { transform: rotate(-45deg) scale(1.3); }
+      75% { transform: rotate(-45deg) scale(1.15); }
     }
 
     /* Mensaje final */
     #final {
       display: none;
-      font-size: 1.2 em;
+      font-size: 1.2em;
       margin-top: 15px;
       color: #ffefba;
-      text-shadow: 0 0 10 px #f0f;
+      text-shadow: 0 0 10px #f0f;
       animation: aparecer 2s ease-in-out forwards;
     }
     @keyframes aparecer {
-      desde { opacidad: 0; transform: translateY(20px); }
-      hasta { opacidad: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 📱 Responsividad */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.3em; }
+      .texto { font-size: 0.9em; }
+      #inicio button { font-size: 1em; padding: 10px 20px; }
+      .corazon { width: 55px; height: 50px; }
+      .corazon::before, .corazon::after {
+        width: 55px; height: 55px;
+      }
     }
   </style>
 </head>
@@ -169,42 +184,43 @@ resuelven mi algoritmo cuando te hallo.`;
     const inicio = document.getElementById("inicio");
     const contenido = document.getElementById("contenido");
     const musica = document.getElementById("musica");
-    const poema = documentElementById("poema");
+    const poema = document.getElementById("poema");
 
     // Iniciar con botón
     btn.addEventListener("click", async () => {
       try {
-        await musica.play(); //desbloquear musica
+        await musica.play();
       } catch(e) {
-        console.log("El audio no se pudo reproducir aun: ", e);
+        console.log("El audio no se pudo reproducir aún: ", e);
       }
 
-      inicio.remove(); //elimina la pantalla principal 
-      contenido.style.display = "block"; //muestra el contenido 
-      escribir(); //arranca el efecto de escritura 
+      inicio.remove();
+      contenido.style.display = "block";
+      escribir();
     });
 
     // Efecto de escritura
     function escribir() {
-      if (i < texto.length ) {
+      if (i < texto.length) {
         poema.textContent += texto.charAt(i);
         i++;
         setTimeout(escribir, 50);
       } else {
-        document.getElementById ("corazón"). style.display = "block";
+        document.getElementById("corazon").style.display = "block";
         setTimeout(() => {
-          document.getElementById ("final"). style.display = "block";
-        }, 1000 );
+          document.getElementById("final").style.display = "block";
+        }, 1200);
       }
     }
 
     // Corazón interactivo
-    document.getElementById ("corazon").addEventListener("click", () => {
-      let c = document.getElementById ("corazon");
-      c.style.transform = "rotate(-45deg) scale( 1.5 )";
+    document.getElementById("corazon").addEventListener("click", () => {
+      let c = document.getElementById("corazon");
+      c.style.transform = "rotate(-45deg) scale(1.5)";
       setTimeout(() => {
         c.style.transform = "rotate(-45deg) scale(1)";
-      }, 500 );
+      }, 500);
     });
   </script>
-</body> </html>
+</body>
+</html>
